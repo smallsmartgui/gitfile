@@ -26,10 +26,10 @@ int main(void)
 	USART2_Init();
 	Delay_Init();                                            //systick初始化
 	printf ( menu );                                         //显示菜单    
-    printf("\r\n    \r\n");	
+  printf("\r\n    \r\n");	
 	SPI_FLASH_Init();
 	id=SPI_FLASH_ReadID();
-    printf("\r\n 0x%x   \r\n",id);
+  printf("\r\n 0x%x   \r\n",id);
 	while(1)
 	{		
 	
