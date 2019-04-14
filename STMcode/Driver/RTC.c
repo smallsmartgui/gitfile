@@ -7,7 +7,7 @@
   */
 	
 #include "RTC.h"
-
+uint16_t data_length; //这句原本在USART文件中，可那边文件并没有用到这个
 u32 THH = 0, TMM = 0, TSS = 0;
 
 /**
@@ -95,13 +95,13 @@ u32 Time_Regulate(void)
   { 
 	  while(data_length<8){;}                                      //等待输入00:00:00
 	  error=0;
-    Tmp_HH=(rx_buffer[1] - 0x30) + ((rx_buffer[0] - 0x30) * 10);
+    Tmp_HH=(USART1_RECEIVE_DATA[1] - 0x30) + ((USART1_RECEIVE_DATA[0] - 0x30) * 10);
 	  if(Tmp_HH>23) {error=1;}
-	  Tmp_MM=(rx_buffer[4] - 0x30) + ((rx_buffer[3] - 0x30) * 10);
+	  Tmp_MM=(USART1_RECEIVE_DATA[4] - 0x30) + ((USART1_RECEIVE_DATA[3] - 0x30) * 10);
 	  if(Tmp_MM>59) {error=2;}
-	  Tmp_SS=(rx_buffer[7] - 0x30) + ((rx_buffer[6] - 0x30) * 10);//判断时间是否有误
+	  Tmp_SS=(USART1_RECEIVE_DATA[7] - 0x30) + ((USART1_RECEIVE_DATA[6] - 0x30) * 10);//判断时间是否有误
 	  if(Tmp_SS>59) {error=3;}
-	  if(error!=0){printf("\r\nInput error,  please try again\r\n");memset(rx_buffer,0x00,DATA_BUF_SIZE); data_length=0;}
+	  if(error!=0){printf("\r\nInput error,  please try again\r\n");memset(USART1_RECEIVE_DATA,0x00,DATA_BUF_SIZE); data_length=0;}
   } while(error!=0);
 
   return((Tmp_HH*3600 + Tmp_MM*60 + Tmp_SS));
